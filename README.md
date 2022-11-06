@@ -76,7 +76,7 @@ Now you prepare yourself for the first boot
 qemu-system-arm -M vexpress-a9 -nographic -kernel zimage -dtb vexpess-v2p-ca9.dtb -sd rootfs.img -append "console=ttyAMA0 root=/dev/mmcblk0 ip=192.168.7.100" -net nic -net tap,ifname=tap0
 ```
 
-* If the qemu is not running re download the kernel
+* If the qemu is not running or throwing structural error resize the rootfs.img
 
 * Login as root by typing "root"
 
