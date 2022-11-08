@@ -468,7 +468,7 @@ https://gist.github.com/rkubik/b96c23bd8ed58333de37f2b8cd052c30
 
 ## 2.Aiee
 
-* A hard panic related with interrupts
+* A hard panic related with interrupts
 
 ## 3.Taint
 
@@ -500,7 +500,7 @@ Since the functions are not a part of vmlinux, the effort required for bug traci
 ```
 arm-linux-gnueabi-addr2line -f 0x28 -e oops.ko
 ```
-* This command will show the error line in the program
+* This command will show the error line in the program
 ```
 init_kernel_module
 /home/u40017723/WorkSpace/EOS/EmbeddedLinux/Qemu/KernelDebugging/Modules/Oops/oops.c:11
@@ -508,20 +508,20 @@ init_kernel_module
 ## Static Code
 
 * To locate the crash site in code that is included in the kernel image, you can also use the addr2line programme.
-* In this situation, vmlinux will have to do since we need an image with debugging symbols enabled in it.
+* In this situation, vmlinux will have to do since we need an image with debugging symbols enabled in it.
 
 ```
 arm-linux-gnueabi-addr2line -f 80b014f4 -e vmlinux
 ```
 
-* This command will show the error line in the program
+* This command will show the error line in the program
 ```
 kernel_init_freeable at /home/u40017723/WorkSpace/KernelDebugging/linux-5.14.7/init/main.c:1606
 ```
 
 ## Objdump
 
-If you recall from the previous chapter, the addr2line function only gives us the line number from the file that crashed, nothing more. To perform a more thorough analysis, we will either need to open the file and look for the problem in the given line or use gdb.
+* If you recall from the previous chapter, the addr2line function only gives us the line number from the file that crashed, nothing more. To perform a more thorough analysis, we will either need to open the file and look for the problem in the given line or use gdb.
 
 ```
 objdump -x /bin/ls
