@@ -523,4 +523,8 @@ kernel_init_freeable at /home/u40017723/WorkSpace/KernelDebugging/linux-5.14.7/i
 
 If you recall from the previous chapter, the addr2line function only gives us the line number from the file that crashed, nothing more. To perform a more thorough analysis, we will either need to open the file and look for the problem in the given line or use gdb.
 
+```
+objdump -x /bin/ls
+```
+
 
