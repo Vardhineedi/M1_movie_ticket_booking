@@ -461,9 +461,12 @@ https://gist.github.com/rkubik/b96c23bd8ed58333de37f2b8cd052c30
 
 ## 1.Kernel Panic
 
-* This a situation wherein the system enters into dead state due to the severity of the crash. Technically speaking, a panic is a subset of the oops (i.e., the more serious of the oopses).
-* After running the qemu you can see the kernel panic 
-* As shown in the below screenshot
+* This a situation wherein the system enters into dead state due to the severity of the crash. Technically speaking, a panic is a subset of the oops (i.e., the more     serious of the oopses). 
+
+
+* After running the qemu you can see the kernel panic.
+
+* As shown in the below screenshot.
 
 
 ## 2.Aiee
