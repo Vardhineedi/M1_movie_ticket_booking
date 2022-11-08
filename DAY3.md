@@ -45,9 +45,9 @@ open source applications such as oVirt, OpenStack and virt-manager.
 
 * QEMU as a whole is released under the GNU General Public License,
 version 2. For full licensing details, consult the LICENSE file.
-  
-  
-  
+
+
+
 # BUILDING KERNEL
 
 ## `Defining our Kernel`
@@ -146,7 +146,7 @@ gcc-arm-linux-gnueabi filename.c
 
 * It will generate a a.out which will only excute in arm architecture
 * We can send a.out file to qemu in many ways. We are using two ways to send outputfile to qemu
-  The two ways 1> Copying using mount  2> By network.
+The two ways 1> Copying using mount  2> By network.
 
 ## 1. Mount
 * create a mounting named folder in images
@@ -202,11 +202,11 @@ INTREE and OUTTREE
 #include <linux/module.h>
 #include <linux/kernel.h>
 static int __init hello_init(void){
-   printk("Hello World..welcome\n");
-   return 0;
+printk("Hello World..welcome\n");
+return 0;
 }
 static void __exit hello_exit(void){
-   printk("Bye,Leaving the world\n");
+printk("Bye,Leaving the world\n");
 }
 module_init(hello_init);
 module_exit(hello_exit);
@@ -233,13 +233,13 @@ dmesg -c  ->lists the log of messages and clears the log
 * For structural error try with:-
 
 
-  - resizing the roofts.img
+- resizing the roofts.img
 ```
 e2fsck -f rootfs.img
 resize2fs rootfs.img 16M
 ```
-   - umount and mount again       
-   - delete the files and redownload
+- umount and mount again       
+- delete the files and redownload
 
 * For library errors:-
 ```
@@ -267,12 +267,12 @@ mkdir drivers/char/dtest
 #include<linux/kernel.h>
 static int __init hello_init(void)
 {
-  printk("Hello world..Welcome\n");
-  return 0;
+printk("Hello world..Welcome\n");
+return 0;
 }
 static void __exit hello_exit(void)
 {
-   printk("Bye,Leaving the world\n");
+printk("Bye,Leaving the world\n");
 }
 module_init(hello_init);
 module_exit(hello_exit);
@@ -413,12 +413,12 @@ Example for the gdb debugging
 # include <stdio.h>
 int main()
 {
-    int i, num, j;
-    printf ("Enter the number: ");
-    scanf ("%d", &num );
-    for (i=1; i<num; i++)
-        j=j*i;    
-    printf("The factorial of %d is %d\n",num,j);
+int i, num, j;
+printf ("Enter the number: ");
+scanf ("%d", &num );
+for (i=1; i<num; i++)
+j=j*i;    
+printf("The factorial of %d is %d\n",num,j);
 }
 ```
 Launch the C debugger (gdb).
