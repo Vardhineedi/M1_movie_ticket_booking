@@ -7,6 +7,30 @@ INTREE and OUTTREE
 * out tree kernel is nothing but modules which are developed outside the source kernel
 * some commands used 
 ```
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
+static int __init hello_init(void){
+   printk("Hello World..welcome\n");
+   return 0;
+}
+static void __exit hello_exit(void){
+   printk("Bye,Leaving the world\n");
+}
+module_init(hello_init);
+module_exit(hello_exit);
+MODULE_LICENCE("GPL")
+MODULE_AUTHOR("SHARATH");
+MODULE_DESCRIPTION("A simple module");
+```
+* Now write a Makefile to compile and run the program
+* Make sure you CROSS COMPILE the program with this command ```ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-```
+* Now after running the program you will get ```.ko``` file which means kernel output.
+* Now copy this .ko file to target kernel either by using Mount Method or Network Method.
+* After this login to Qemu when you do ls you will find .ko file.
+* you can run this by using following commands.
+
+```
 insmod    -> which is used to insert the module
 rmmod     -> which is used to remove the module
 lsmod     -> it lists the loaded modules
@@ -35,20 +59,88 @@ apt install libsasl2-dev libsdl1.2-dev libseccomp-dev libsnappy-dev libssh2-1-de
 ```
 ## IN TREE KERNEL
 
+* In tree kernel is nothing but we make changes or write programs with in the kernel.
+* After making changes we have to rebuid the kernel to reflect the changes.
+
 ## Dynamic Module
 * Dynamic module is nothing but it can load and unload at runtime
 * when we copy the kernel output to target board we can load the modules using insmod and can be unloaded with rmmod
-
+* Create a sub dir in KSRC
+```
+mkdir drivers/char/dtest
+```
+* place hello.c in dtest
+```
+obj-m += hello.o
+```
+* add the following entry to drivers/char/Makefile
+* be cautious about this step, as editing 
+* existingg file
+```
+obl-m +=dtest/
+```
+* Rebuild the kernel and redeploy 
+* for rebuilding the kernel yse the following commands
+```
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-  modules
+sudo mount -o loop,rw.sync rootfs.img/mnt/rootfs
+make ARCH = arm CROSS_COMPILE=arm-linux-gnueabi- modules_install INSTALL_MOD_PATH=/mnt/rootfs
+sudo umount /mnt/rootfs
+```
 ## Static MOdule 
 * These are quite opposite to dynamic modules. 
 * Static modules present within the kernel if we want we can enable and disable it but we can not load unload  like dynamic modules
 ```
-# apt install build-essential git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev
-# apt build-dep qemu-kvm
-# apt install libaio-dev libbluetooth-dev libbrlapi-dev libbz2-dev
-# apt install libsasl2-dev libsdl1.2-dev libseccomp-dev libsnappy-dev libssh2-1-dev
+//sdemo.c ref code for static module
+int svar 100;
+void sayHello(void) {
+printk("Greeting Hello\n");
+}
+static int _init sdemo_init(void) {
+int i;
+for(i=1;i<=4;i++)
+printk("sdemo, i-%d\n", svar);
+returun 0;
+}
+static void exit sdemo_exit(void) {
+printk("Bye, Leaving the world\n");
+}
+EXPORT_SYMBOL_GPL (svar);
+EXPORT_SYMBOL_GPL (sayHello);
 ```
-# gdb-debugger
+* Create a sub dir in KSRC 
+```
+mkdir drivers/char/stest
+```
+* Place sdemo.c in stest
+* Create a Makefile in stest
+```
+obj-y +=sdemo.o
+```
+* Add following entry to drivers/char/Makefile
+
+```
+obj-y +=stest/
+```
+* be cautious, as editing existing file
+* Re-build the kernel & redeploy
+* reboot with new kernel
+* No need to rebuild modules (or) modules_install
+* gdb-debugger
+```
+arm-linux-gnueabi-nm vmlinux | grep sdemo_init
+arm-linux-gnueabi-objdump -t vmlinux | grep sdemo_init
+```
+* normal nm, objdump in case of native
+* check /proc/kallsyms
+```
+cat /proc/kallsyms | grep sdemo_init
+cat /proc/kallsyms | grep svar
+cat /proc/kallsyms | grep sayHello
+dmesg| grep sdemo
+```
+* check sdemo_init under generated
+* System. map also
 
 ## GDB installation
 
