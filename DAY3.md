@@ -454,4 +454,70 @@ Breakpoint 1, main (argc=1, argv=0x7fffffffda48) at fibonacci_naive.c:10
 ```
 https://gist.github.com/rkubik/b96c23bd8ed58333de37f2b8cd052c30
 ```
+# OOPS Crash Analysis
+
+* An “Oops” is something the kernel would trigger when some goes wrong in execution sequence, or an exception, in the kernel code. It’s somewhat like the segfaults of user-space.
+* It has three types of crash analysis
+
+## 1.Kernel Panic
+
+* This a situation wherein the system enters into dead state due to the severity of the crash. Technically speaking, a panic is a subset of the oops (i.e., the more serious of the oopses).
+
+## 2.Aiee
+
+* A hard panic related with interrupts
+
+## 3.Taint
+
+* The kernel will mark itself as 'tainted' when something occurs that might be relevant later when investigating problems, Don't worry too much about this, most of the time it's not a problem to run a tainted kernel;
+
+* To solve the oops crash we have a method, is known as ```addr2line```
+
+## Address to Line
+
+* The addr2line (address to line) command is a very useful tool for identifying the line of code that caused the problem!
+
+* The man page for this command contains additional details.
+* The basic use case is shown as follows.
+
+```
+addr2line -f <the offset address from the crash info> -e <path of the executable file>
+```
+Use the proper compiler triplet as a prefix if you are working on an embedded target board.
+You can use the following line with ARM architecture.
+
+```
+arm-linux-gnueabi-addr2line -f <the offset address from the crash info> -e <path of the executable file>
+```
+
+## Dynamic Modules
+
+Since the functions are not a part of vmlinux, the effort required for bug tracing with dynamic modules (which might be either In-Tree or Out-Tree) is significantly less than that required for static modules, making bug analysis simple and quicker.
+
+```
+arm-linux-gnueabi-addr2line -f 0x28 -e oops.ko
+```
+* This command will show the error line in the program
+```
+init_kernel_module
+/home/u40017723/WorkSpace/EOS/EmbeddedLinux/Qemu/KernelDebugging/Modules/Oops/oops.c:11
+```
+## Static Code
+
+* To locate the crash site in code that is included in the kernel image, you can also use the addr2line programme.
+* In this situation, vmlinux will have to do since we need an image with debugging symbols enabled in it.
+
+```
+arm-linux-gnueabi-addr2line -f 80b014f4 -e vmlinux
+```
+
+* This command will show the error line in the program
+```
+kernel_init_freeable at /home/u40017723/WorkSpace/KernelDebugging/linux-5.14.7/init/main.c:1606
+```
+
+## Objdump
+
+If you recall from the previous chapter, the addr2line function only gives us the line number from the file that crashed, nothing more. To perform a more thorough analysis, we will either need to open the file and look for the problem in the given line or use gdb.
+
 
