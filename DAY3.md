@@ -486,8 +486,8 @@ https://gist.github.com/rkubik/b96c23bd8ed58333de37f2b8cd052c30
 ```
 addr2line -f <the offset address from the crash info> -e <path of the executable file>
 ```
-Use the proper compiler triplet as a prefix if you are working on an embedded target board.
-You can use the following line with ARM architecture.
+* Use the proper compiler triplet as a prefix if you are working on an embedded target board.
+* You can use the following line with ARM architecture.
 
 ```
 arm-linux-gnueabi-addr2line -f <the offset address from the crash info> -e <path of the executable file>
